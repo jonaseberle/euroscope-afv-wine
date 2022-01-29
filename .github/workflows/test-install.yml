@@ -13,7 +13,7 @@ jobs:
       - name: "Checkout"
         uses: actions/checkout@v2
       - name: "Install wine"
-        run: sudo apt-get install wine
+        run: sudo apt-get -y install wine winetricks
       - name: "Run euroscope-afv-wine_install.sh"
         run: |
           mkdir wine
