@@ -1,0 +1,16 @@
+name: "C/I"
+on:
+  push:
+  pull_request:
+  workflow_dispatch:
+jobs:
+  ci-shellcheck:
+    name: "shellcheck"
+    runs-on: ubuntu-20.04
+    steps:
+      - name: "Checkout"
+        uses: actions/checkout@v2
+      - name: "Install shellcheck"
+        run: sudo apt-get -y install shellcheck
+      - name: "shellcheck"
+        run: shellcheck *.sh
