@@ -6,7 +6,7 @@ on:
   schedule:
     - cron: '43 3 * * 1'
 jobs:
-  install_ubuntu20_wine5:
+  ubuntu20_wine5:
     runs-on: ubuntu-20.04
     steps:
       - name: "Checkout"
@@ -33,7 +33,7 @@ jobs:
           path: |
             ./wine/*.log
             ./wine/*.reg
-  install_ubuntu20_winehq-stable:
+  ubuntu20_winehq-stable:
     runs-on: ubuntu-20.04
     steps:
       - name: "Checkout"
@@ -61,7 +61,7 @@ jobs:
           path: |
             ./wine/*.log
             ./wine/*.reg
-  install_ubuntu20_winehq-devel:
+  ubuntu20_winehq-devel:
     runs-on: ubuntu-20.04
     steps:
       - name: "Checkout"
@@ -89,7 +89,7 @@ jobs:
           path: |
             ./wine/*.log
             ./wine/*.reg
-  install_ubuntu20_winehq-staging:
+  ubuntu20_winehq-staging:
     runs-on: ubuntu-20.04
     steps:
       - name: "Checkout"
