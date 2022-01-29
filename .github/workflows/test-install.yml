@@ -15,7 +15,7 @@ jobs:
       - name: "Enable 32bit"
         run: sudo dpkg --add-architecture i386 && sudo apt-get update
       - name: "Install wine"
-        run: sudo apt-get install --yes --no-install-recommends -V wine-stable wine32:i386 winetricks
+        run: sudo apt-get install --yes --no-install-recommends -V wine-stable wine32:i386 libwine:i386 winetricks
       - name: "Run euroscope-afv-wine_install.sh --yes"
         run: |
           mkdir wine
