@@ -20,11 +20,11 @@ jobs:
           # https://github.com/actions/virtual-environments/issues/4589#issuecomment-980506595
           sudo apt install -y --allow-downgrades libpcre2-8-0=10.34-7
           sudo apt install -y wine32 winetricks
-      - name: "Run euroscope-afv-wine_install.sh --yes"
+      - name: "Run euroscope-afv-wine_install.sh --verbose --yes"
         run: |
           mkdir wine
           cd wine
-          ../euroscope-afv-wine_install.sh --yes
+          ../euroscope-afv-wine_install.sh --verbose --yes
       - name: "Upload logs"
         uses: actions/upload-artifact@v2
         if: ${{ always() }}
@@ -48,11 +48,11 @@ jobs:
           # https://github.com/actions/virtual-environments/issues/4589#issuecomment-980506595
           sudo apt install -y --allow-downgrades libpcre2-8-0=10.34-7
           sudo apt install --install-recommends winehq-stable winetricks
-      - name: "Run euroscope-afv-wine_install.sh --yes"
+      - name: "Run euroscope-afv-wine_install.sh --verbose --yes"
         run: |
           mkdir wine
           cd wine
-          ../euroscope-afv-wine_install.sh --yes
+          ../euroscope-afv-wine_install.sh --verbose --yes
       - name: "Upload logs"
         uses: actions/upload-artifact@v2
         if: ${{ always() }}
@@ -76,11 +76,11 @@ jobs:
           # https://github.com/actions/virtual-environments/issues/4589#issuecomment-980506595
           sudo apt install -y --allow-downgrades libpcre2-8-0=10.34-7
           sudo apt install --install-recommends winehq-devel winetricks
-      - name: "Run euroscope-afv-wine_install.sh --yes"
+      - name: "Run euroscope-afv-wine_install.sh --verbose --yes"
         run: |
           mkdir wine
           cd wine
-          ../euroscope-afv-wine_install.sh --yes
+          ../euroscope-afv-wine_install.sh --verbose --yes
       - name: "Upload logs"
         uses: actions/upload-artifact@v2
         if: ${{ always() }}
@@ -104,11 +104,11 @@ jobs:
           # https://github.com/actions/virtual-environments/issues/4589#issuecomment-980506595
           sudo apt install -y --allow-downgrades libpcre2-8-0=10.34-7
           sudo apt install --install-recommends winehq-staging winetricks
-      - name: "Run euroscope-afv-wine_install.sh --yes"
+      - name: "Run euroscope-afv-wine_install.sh --verbose --yes"
         run: |
           mkdir wine
           cd wine
-          ../euroscope-afv-wine_install.sh --yes
+          ../euroscope-afv-wine_install.sh --verbose --yes
       - name: "Upload logs"
         uses: actions/upload-artifact@v2
         if: ${{ always() }}
