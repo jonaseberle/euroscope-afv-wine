@@ -46,7 +46,7 @@ function parseArgs() {
   # -use return value from ${PIPESTATUS[0]}, because ! hosed $?
   ! getopt --test >/dev/null
   if [[ ${PIPESTATUS[0]} -ne 4 ]]; then
-    echo -e "$errorC‹getopt --test› failed in this environment.$endC"
+    printf "%b‹getopt --test› failed in this environment.%b\n" "$fError" "$fEnd"
     exit 1
   fi
 
@@ -110,15 +110,15 @@ printf "  Current directory: %s\n" "$PWD" |
 printf "This program will only change files inside this directory. Anyways the built win environment has access to all files that your user has access to.\n"
 
 # check if required programs available in $PATH
-for prog in getopts pkill unzip grep wine winetricks wget; do
+for prog in getopts pkill unzip grep wine winetricks wget command; do
   if ! type $prog >/dev/null; then
     printf "%bERROR: we need the program ‹%s›\n%b" "${fError}" "$prog" "$fEnd"
     exit 1
   fi
 done
 
-wineBin="$(which wine)"
-winetricksBin="$(which winetricks)"
+wineBin="$(command -v wine)"
+winetricksBin="$(command -v winetricks)"
 
 printf "\n%bInformation about your system:%b\n" "$fInfo" "$fEnd"
 printf "  wine version      : %s\n" "$("$wineBin" --version)" |
@@ -170,7 +170,6 @@ WINEDLLOVERRIDES="mscoree=" wine wineboot
 wine winecfg -v win7
 
 printf "\n%bInstalling libs…\n%b" "$fSection" "$fEnd"
-# This seems to set the Windows version to WinXP
 winetricks --unattended dotnet40
 winetricks --unattended dotnet45
 winetricks --unattended dotnet46

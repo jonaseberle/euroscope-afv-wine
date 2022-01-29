@@ -12,5 +12,7 @@ jobs:
         uses: actions/checkout@v2
       - name: "Install shellcheck"
         run: sudo apt-get -y install shellcheck
-      - name: "shellcheck"
-        run: shellcheck *.sh
+      - name: "shellcheck all (outcome ignored)"
+        run: shellcheck --version; shellcheck *.sh || true
+      - name: "shellcheck warning+"
+        run: shellcheck --version; shellcheck --severity=warning *.sh
