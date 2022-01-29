@@ -33,6 +33,76 @@ fStatus=$purpleb
 fInfo=$greenb
 fError=$red
 
+function usage() {
+  printf "Usage: euroscope-afv-wine_install.sh [<options>]\n"
+  printf "  <options>:\n"
+  printf "\t%-15s %s\n" "-h|--help" "this help"
+  printf "\t%-15s %s\n" "-y|--yes" "no confirmations"
+  printf "\t%-15s %s\n" "-v|--verbose" "echo all script commands"
+}
+
+function parseArgs() {
+  # -allow a command to fail with !’s side effect on errexit
+  # -use return value from ${PIPESTATUS[0]}, because ! hosed $?
+  ! getopt --test >/dev/null
+  if [[ ${PIPESTATUS[0]} -ne 4 ]]; then
+    echo -e "$errorC‹getopt --test› failed in this environment.$endC"
+    exit 1
+  fi
+
+  OPTIONS="yvh"
+  LONGOPTS="yes,verbose,help"
+
+  # -regarding ! and PIPESTATUS see above
+  # -temporarily store output to be able to check for errors
+  # -activate quoting/enhanced mode (e.g. by writing out “--options”)
+  # -pass arguments only via   -- "$@"   to separate them correctly
+  ! PARSED=$(getopt --options=$OPTIONS --longoptions=$LONGOPTS --name "$0" -- "$@")
+  if [[ ${PIPESTATUS[0]} -ne 0 ]]; then
+    # e.g. return value is 1
+    #  then getopt has complained about wrong arguments to stdout
+    usage
+    exit 2
+  fi
+  # read getopt’s output this way to handle the quoting right:
+  eval set -- "$PARSED"
+
+  while true; do
+    case "$1" in
+    -y | --yes)
+      isForce=1
+      shift
+      ;;
+    -v | --verbose)
+      isVerbose=1
+      shift
+      ;;
+    -h | --help)
+      usage
+      exit 0
+      ;;
+    --)
+      shift
+      break
+      ;;
+    *)
+      usage
+      exit 3
+      ;;
+    esac
+  done
+}
+
+# arguments
+isForce=0
+isVerbose=0
+
+parseArgs "$@"
+
+if [ $isVerbose == 1 ]; then
+  set -x
+fi
+
 echo "You should call this program from a fresh (empty) directory where you want your EuroScope/AfV setup with wine."
 printf "  Suggestion:        %s\n" "$HOME/VATSIM-ATC/wine"
 printf "  Current directory: %s\n" "$PWD" |
@@ -40,7 +110,7 @@ printf "  Current directory: %s\n" "$PWD" |
 printf "This program will only change files inside this directory. Anyways the built win environment has access to all files that your user has access to.\n"
 
 # check if required programs available in $PATH
-for prog in pkill unzip grep wine winetricks wget; do
+for prog in getopts pkill unzip grep wine winetricks wget; do
   if ! type $prog >/dev/null; then
     printf "%bERROR: we need the program ‹%s›\n%b" "${fError}" "$prog" "$fEnd"
     exit 1
@@ -56,11 +126,12 @@ printf "  wine version      : %s\n" "$("$wineBin" --version)" |
 printf "  winetricks version: %s\n" "$("$winetricksBin" --version)" |
   tee -a "$logFilename"
 
-printf "%b\nAre you sure you want to create or update the wine environment in the current directory?%b" "$fHighlight" "$fEnd"
-read -p " [y/n] " -n 1 -r
-echo
-
-[[ $REPLY =~ ^[Yy]$ ]] || exit 1
+if [ $isForce == 0 ]; then
+  printf "%b\nAre you sure you want to create or update the wine environment in the current directory?%b" "$fHighlight" "$fEnd"
+  read -p " [y/n] " -n 1 -r
+  echo
+  [[ $REPLY =~ ^[Yy]$ ]] || exit 1
+fi
 
 printf "%bFind the output of all commands in ‹%s› if you need it.%b\n" "$fInfo" "$logFilename" "$fEnd"
 

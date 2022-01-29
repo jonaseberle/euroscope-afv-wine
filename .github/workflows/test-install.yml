@@ -14,8 +14,15 @@ jobs:
         uses: actions/checkout@v2
       - name: "Install wine"
         run: sudo apt-get -y install wine winetricks
-      - name: "Run euroscope-afv-wine_install.sh"
+      - name: "Run euroscope-afv-wine_install.sh --yes"
         run: |
           mkdir wine
           cd wine
-          ../euroscope-afv-wine_install.sh
+          ../euroscope-afv-wine_install.sh --yes
+      - name: "Upload logs"
+        uses: actions/upload-artifact@v2
+        with:
+          name: "logs and win registry"
+          path: |
+            ./wine/*.log
+            ./wine/*.reg
