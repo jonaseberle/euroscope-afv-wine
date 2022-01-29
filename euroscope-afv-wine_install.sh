@@ -35,26 +35,26 @@ fError=$red
 
 echo "You should call this program from a fresh (empty) directory where you want your EuroScope/AfV setup with wine."
 printf "  Suggestion:        %s\n" "$HOME/VATSIM-ATC/wine"
-printf "  Current directory: %s\n" "$PWD" \
-  | tee -a "$logFilename"
+printf "  Current directory: %s\n" "$PWD" |
+  tee -a "$logFilename"
 printf "This program will only change files inside this directory. Anyways the built win environment has access to all files that your user has access to.\n"
 
 # check if required programs available in $PATH
 for prog in pkill pwait unzip grep wine winetricks wget; do
-    if ! type $prog > /dev/null; then
-		printf "%bERROR: we need the program ‹%s›\n%b" "${fError}" "$prog" "$fEnd"
-		exit 1
-	fi
+  if ! type $prog >/dev/null; then
+    printf "%bERROR: we need the program ‹%s›\n%b" "${fError}" "$prog" "$fEnd"
+    exit 1
+  fi
 done
 
 wineBin="$(which wine)"
 winetricksBin="$(which winetricks)"
 
 printf "\n%bInformation about your system:%b\n" "$fInfo" "$fEnd"
-printf "  wine version      : %s\n" "$("$wineBin" --version)" \
-  | tee -a "$logFilename"
-printf "  winetricks version: %s\n" "$("$winetricksBin" --version)" \
-  | tee -a "$logFilename"
+printf "  wine version      : %s\n" "$("$wineBin" --version)" |
+  tee -a "$logFilename"
+printf "  winetricks version: %s\n" "$("$winetricksBin" --version)" |
+  tee -a "$logFilename"
 
 printf "%b\nAre you sure you want to create or update the wine environment in the current directory?%b" "$fHighlight" "$fEnd"
 read -p " [y/n] " -n 1 -r
@@ -65,33 +65,33 @@ echo
 printf "%bFind the output of all commands in ‹%s› if you need it.%b\n" "$fInfo" "$logFilename" "$fEnd"
 
 function download() {
-	local _url="$1"
-	local _filename="$2"
-	if [ -f "$_filename" ]; then
-		printf "%bFound ‹%s› in current directory. Not downloading from ‹%s›.\n%b" "$fStatus" "$_filename" "$_url" "$fEnd" \
-			| tee -a "$logFilename"
-		return 0
-	fi
-	printf "%bDownloading ‹%s› to current directory…\n%b" "$fStatus" "$_url" "$fEnd" \
-		| tee -a "$logFilename"
-	wget "$_url" -O "$_filename"
+  local _url="$1"
+  local _filename="$2"
+  if [ -f "$_filename" ]; then
+    printf "%bFound ‹%s› in current directory. Not downloading from ‹%s›.\n%b" "$fStatus" "$_filename" "$_url" "$fEnd" |
+      tee -a "$logFilename"
+    return 0
+  fi
+  printf "%bDownloading ‹%s› to current directory…\n%b" "$fStatus" "$_url" "$fEnd" |
+    tee -a "$logFilename"
+  wget "$_url" -O "$_filename"
 }
 
 function wine() {
-	printf "%bRunning \"WINEARCH=win32 WINEPREFIX=\"$PWD\" wine $*\"…\n%b" "$fStatus" "$fEnd" \
-		| tee -a "$logFilename"
-	WINEARCH=win32 WINEPREFIX="$PWD" "$wineBin" "$@" &>> "$logFilename"
+  printf "%bRunning \"WINEARCH=win32 WINEPREFIX=\"$PWD\" wine $*\"…\n%b" "$fStatus" "$fEnd" |
+    tee -a "$logFilename"
+  WINEARCH=win32 WINEPREFIX="$PWD" "$wineBin" "$@" &>>"$logFilename"
 }
 
 function winetricks() {
-	printf "%bRunning \"WINEARCH=win32 WINEPREFIX=\"$PWD\" winetricks $*\"…\n%b" "$fStatus" "$fEnd" \
-		| tee -a "$logFilename"
-	WINEARCH=win32 WINEPREFIX="$PWD" "$winetricksBin" "$@" &>> "$logFilename"
+  printf "%bRunning \"WINEARCH=win32 WINEPREFIX=\"$PWD\" winetricks $*\"…\n%b" "$fStatus" "$fEnd" |
+    tee -a "$logFilename"
+  WINEARCH=win32 WINEPREFIX="$PWD" "$winetricksBin" "$@" &>>"$logFilename"
 }
 
 printf "\n%bConfiguring WINEPREFIX…\n%b" "$fSection" "$fEnd"
 
-printf "\n%bShutting down other wine processes…\n%b" "$fStatus" "$fEnd"
+printf "%bShutting down other wine processes…\n%b" "$fStatus" "$fEnd"
 pkill wineserver || true
 pwait wineserver || true
 
@@ -114,7 +114,7 @@ winetricks --unattended msxml6
 winetricks --unattended urlmon
 winetricks --unattended vcrun2010
 winetricks --unattended vcrun2017
-winetricks --unattended wininet 
+winetricks --unattended wininet
 
 printf "\n%bDownloading programs…\n%b" "$fSection" "$fEnd"
 
