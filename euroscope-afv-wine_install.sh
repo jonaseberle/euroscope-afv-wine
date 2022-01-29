@@ -122,9 +122,8 @@ printf "%bDownloading EuroScope…\n%b" "$fStatus" "$fEnd"
 esFilename="EuroScopeSetup32.msi"
 download https://www.euroscope.hu/install/EuroScopeSetup32.msi "$esFilename"
 
-printf "%bDownloading Audio for VATSIM…\n%b" "$fStatus" "$fEnd"
-afvFilename="Audio for VATSIM.msi"
-download https://audio.vatsim.net/downloads/standalone "$afvFilename"
+printf "%bInstalling EuroScope…\n%b" "$fSection" "$fEnd"
+wine msiexec /q /l "$logFilename" /a "$esFilename"
 
 # find link "Download latest beta" on EuroScope homepage
 printf "%bFinding link \"latest beta\" on EuroScope homepage…\n%b" "$fStatus" "$fEnd"
@@ -134,14 +133,15 @@ printf "%bDownloading EuroScope beta…\n%b" "$fStatus" "$fEnd"
 esBetaFilename="EuroScope-Beta.zip"
 download "$_esBetaUrl" "$esBetaFilename"
 
-printf "%bInstalling EuroScope…\n%b" "$fSection" "$fEnd"
-wine msiexec /q /i "$esFilename"
-
 printf "%bApplying EuroScope beta…\n%b" "$fSection" "$fEnd"
 unzip -o $esBetaFilename -d drive_c/Program\ Files/EuroScope/
 
+printf "%bDownloading Audio for VATSIM…\n%b" "$fStatus" "$fEnd"
+afvFilename="Audio for VATSIM.msi"
+download https://audio.vatsim.net/downloads/standalone "$afvFilename"
+
 printf "%bInstalling Audio for VATSIM…\n%b" "$fSection" "$fEnd"
-wine msiexec /i "$afvFilename"
+wine msiexec /q /l "$logFilename" /a "$afvFilename"
 
 printf "%bSimulating shutdown…\n%b" "$fInfo" "$fEnd"
 wine wineboot --shutdown
