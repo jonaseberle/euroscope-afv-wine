@@ -40,7 +40,7 @@ printf "  Current directory: %s\n" "$PWD" |
 printf "This program will only change files inside this directory. Anyways the built win environment has access to all files that your user has access to.\n"
 
 # check if required programs available in $PATH
-for prog in pkill pwait unzip grep wine winetricks wget; do
+for prog in pkill unzip grep wine winetricks wget; do
   if ! type $prog >/dev/null; then
     printf "%bERROR: we need the program ‹%s›\n%b" "${fError}" "$prog" "$fEnd"
     exit 1
@@ -93,7 +93,6 @@ printf "\n%bConfiguring WINEPREFIX…\n%b" "$fSection" "$fEnd"
 
 printf "%bShutting down other wine processes…\n%b" "$fStatus" "$fEnd"
 pkill wineserver || true
-pwait wineserver || true
 
 # This seems to circumvent the "Mono is missing" prompt
 WINEDLLOVERRIDES="mscoree=" wine wineboot
