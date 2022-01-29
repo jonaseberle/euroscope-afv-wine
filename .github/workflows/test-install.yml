@@ -1,0 +1,21 @@
+name: "Test install"
+on:
+  push:
+  pull_request:
+  workflow_dispatch:
+  schedule:
+    - cron: '43 3 * * 1'
+jobs:
+  install:
+    name: "install"
+    runs-on: ubuntu-20.04
+    steps:
+      - name: "Checkout"
+        uses: actions/checkout@v2
+      - name: "Install wine"
+        run: sudo apt-get install wine wine-gecko wine-mono
+      - name: "Run euroscope-afv-wine_install.sh"
+        run: |
+          mkdir wine
+          cd wine
+          ../euroscope-afv-wine_install.sh
