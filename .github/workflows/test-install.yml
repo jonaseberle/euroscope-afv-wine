@@ -13,7 +13,7 @@ jobs:
       - name: "Checkout"
         uses: actions/checkout@v2
       - name: "Enable 32bit"
-        run: sudo dpkg --add-architecture i386
+        run: sudo dpkg --add-architecture i386 && sudo apt-get update
       - name: "Install wine"
         run: sudo apt-get -y install wine32 winetricks
       - name: "Run euroscope-afv-wine_install.sh --yes"
