@@ -12,8 +12,10 @@ jobs:
     steps:
       - name: "Checkout"
         uses: actions/checkout@v2
+      - name: "Enable 32bit"
+        run: sudo dpkg --add-architecture i386
       - name: "Install wine"
-        run: sudo apt-get -y install wine winetricks
+        run: sudo apt-get -y install wine32 winetricks
       - name: "Run euroscope-afv-wine_install.sh --yes"
         run: |
           mkdir wine
