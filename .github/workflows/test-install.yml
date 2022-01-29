@@ -13,9 +13,10 @@ jobs:
       - name: "Checkout"
         uses: actions/checkout@v2
       - name: "Enable 32bit"
-        run: sudo dpkg --add-architecture i386 && sudo apt-get update
+        run: sudo dpkg --add-architecture i386
+      - run: "wget -nc https://dl.winehq.org/wine-builds/winehq.key && sudo apt-key add winehq.key && sudo add-apt-repository 'deb https://dl.winehq.org/wine-builds/ubuntu/ focal main' && sudo apt-get update"
       - name: "Install wine"
-        run: sudo apt-get install --yes --no-install-recommends -V wine-stable wine32:i386 libwine:i386 winetricks
+        run: sudo apt-get install --install-recommends winehq-stable
       - name: "Run euroscope-afv-wine_install.sh --yes"
         run: |
           mkdir wine
