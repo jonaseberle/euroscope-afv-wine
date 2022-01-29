@@ -13,7 +13,7 @@ jobs:
       - name: "Checkout"
         uses: actions/checkout@v2
       - name: "Install wine"
-        run: sudo apt-get install wine wine-gecko wine-mono
+        run: sudo apt-get install wine
       - name: "Run euroscope-afv-wine_install.sh"
         run: |
           mkdir wine
