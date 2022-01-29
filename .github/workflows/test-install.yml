@@ -21,6 +21,7 @@ jobs:
           ../euroscope-afv-wine_install.sh --yes
       - name: "Upload logs"
         uses: actions/upload-artifact@v2
+        if: ${{ always() }}
         with:
           name: "logs and win registry"
           path: |
