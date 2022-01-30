@@ -103,7 +103,7 @@ if [ $isVerbose == 1 ]; then
   set -x
 fi
 
-echo "You should call this program from a fresh (empty) directory where you want your EuroScope/AfV setup with wine."
+echo "The current directory will be used to setup EuroScope/AfV with wine."
 printf "  Suggestion:        %s\n" "$HOME/VATSIM-ATC/wine"
 printf "  Current directory: %s\n" "$PWD" |
   tee -a "$logFilename"
