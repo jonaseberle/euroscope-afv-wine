@@ -192,7 +192,7 @@ esFilename="EuroScopeSetup32.msi"
 download https://www.euroscope.hu/install/EuroScopeSetup32.msi "$esFilename"
 
 printf "%bInstalling EuroScope…\n%b" "$fSection" "$fEnd"
-wine msiexec /q /l "$logFilename" /i "$esFilename"
+wine msiexec /q /l "euroscope-afv-wine_msiexec-es.log" /i "$esFilename"
 
 # find link "Download latest beta" on EuroScope homepage
 printf "%bFinding link \"latest beta\" on EuroScope homepage…\n%b" "$fStatus" "$fEnd"
@@ -210,7 +210,7 @@ afvFilename="Audio for VATSIM.msi"
 download https://audio.vatsim.net/downloads/standalone "$afvFilename"
 
 printf "%bInstalling Audio for VATSIM…\n%b" "$fSection" "$fEnd"
-wine msiexec /q /l "$logFilename" /i "$afvFilename"
+wine msiexec /q /l "euroscope-afv-wine_msiexec-afv.log" /i "$afvFilename"
 
 printf "%bSimulating shutdown…\n%b" "$fInfo" "$fEnd"
 wine wineboot --shutdown
