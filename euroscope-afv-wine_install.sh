@@ -167,7 +167,7 @@ pkill wineserver || true
 
 # This env seems to circumvent the "Mono is missing" prompt
 WINEDLLOVERRIDES="mscoree=" wine wineboot
-wine winecfg -v win7
+wine winecfg -v win10
 
 printf "\n%bInstalling libs…\n%b" "$fSection" "$fEnd"
 winetricks --unattended dotnet40
