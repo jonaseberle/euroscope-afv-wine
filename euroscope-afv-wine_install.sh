@@ -121,9 +121,9 @@ wineBin="$(command -v wine)"
 winetricksBin="$(command -v winetricks)"
 
 printf "\n%bInformation about your system:%b\n" "$fInfo" "$fEnd"
-printf "  wine version      : %s\n" "$("$wineBin" --version)" |
+printf "  wine version      : %s (%s)\n" "$("$wineBin" --version)" "$wineBin" |
   tee -a "$logFilename"
-printf "  winetricks version: %s\n" "$("$winetricksBin" --version)" |
+printf "  winetricks version: %s (%s)\n" "$("$winetricksBin" --version)" "$winetricksBin" |
   tee -a "$logFilename"
 
 if [ $isForce == 0 ]; then
@@ -165,7 +165,7 @@ printf "\n%bConfiguring WINEPREFIX…\n%b" "$fSection" "$fEnd"
 printf "%bShutting down other wine processes…\n%b" "$fStatus" "$fEnd"
 pkill wineserver || true
 
-# This seems to circumvent the "Mono is missing" prompt
+# This env seems to circumvent the "Mono is missing" prompt
 WINEDLLOVERRIDES="mscoree=" wine wineboot
 wine winecfg -v win7
 
