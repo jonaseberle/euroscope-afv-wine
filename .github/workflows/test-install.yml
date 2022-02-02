@@ -19,9 +19,11 @@ jobs:
           sudo apt update
           # https://github.com/actions/virtual-environments/issues/4589#issuecomment-980506595
           sudo apt install -y --allow-downgrades libpcre2-8-0=10.34-7
-          sudo apt install -y wine32 winetricks
-      - name: "Update winetricks"
-        run: "sudo winetricks --self-update"
+          sudo apt install -y wine32
+      - name: "Download winetricks"
+        run: |
+          wget -O ~/bin/winetricks https://raw.githubusercontent.com/Winetricks/winetricks/master/src/winetricks \
+            && chmod +x ~/bin/winetricks
       - name: "Run euroscope-afv-wine_install.sh --verbose --yes"
         run: |
           mkdir wine
