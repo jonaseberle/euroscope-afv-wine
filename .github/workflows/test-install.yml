@@ -22,7 +22,7 @@ jobs:
           sudo apt install -y wine32
       - name: "Download winetricks"
         run: |
-          sudo wget -O /usr/bin/winetricks https://raw.githubusercontent.com/Winetricks/winetricks/master/src/winetricks \
+          sudo wget --no-show-progress -O /usr/bin/winetricks https://raw.githubusercontent.com/Winetricks/winetricks/master/src/winetricks \
             && sudo chmod +x /usr/bin/winetricks
       - name: "Run euroscope-afv-wine_install.sh --verbose --yes"
         run: |
@@ -51,7 +51,11 @@ jobs:
           sudo apt update
           # https://github.com/actions/virtual-environments/issues/4589#issuecomment-980506595
           sudo apt install -y --allow-downgrades libpcre2-8-0=10.34-7
-          sudo apt install --install-recommends winehq-stable winetricks
+          sudo apt install --install-recommends winehq-stable
+      - name: "Download winetricks"
+        run: |
+          sudo wget --no-show-progress -O /usr/bin/winetricks https://raw.githubusercontent.com/Winetricks/winetricks/master/src/winetricks \
+            && sudo chmod +x /usr/bin/winetricks
       - name: "Run euroscope-afv-wine_install.sh --verbose --yes"
         run: |
           mkdir wine
@@ -79,7 +83,11 @@ jobs:
           sudo apt update
           # https://github.com/actions/virtual-environments/issues/4589#issuecomment-980506595
           sudo apt install -y --allow-downgrades libpcre2-8-0=10.34-7
-          sudo apt install --install-recommends winehq-devel winetricks
+          sudo apt install --install-recommends winehq-devel
+      - name: "Download winetricks"
+        run: |
+          sudo wget --no-show-progress -O /usr/bin/winetricks https://raw.githubusercontent.com/Winetricks/winetricks/master/src/winetricks \
+            && sudo chmod +x /usr/bin/winetricks
       - name: "Run euroscope-afv-wine_install.sh --verbose --yes"
         run: |
           mkdir wine
@@ -107,7 +115,11 @@ jobs:
           sudo apt update
           # https://github.com/actions/virtual-environments/issues/4589#issuecomment-980506595
           sudo apt install -y --allow-downgrades libpcre2-8-0=10.34-7
-          sudo apt install --install-recommends winehq-staging winetricks
+          sudo apt install --install-recommends winehq-staging
+      - name: "Download winetricks"
+        run: |
+          sudo wget --no-show-progress -O /usr/bin/winetricks https://raw.githubusercontent.com/Winetricks/winetricks/master/src/winetricks \
+            && sudo chmod +x /usr/bin/winetricks
       - name: "Run euroscope-afv-wine_install.sh --verbose --yes"
         run: |
           mkdir wine
