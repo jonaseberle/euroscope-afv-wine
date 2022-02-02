@@ -21,7 +21,7 @@ jobs:
           sudo apt install -y --allow-downgrades libpcre2-8-0=10.34-7
           sudo apt install -y wine32 winetricks
       - name: "Update winetricks"
-        run: "winetricks --self-update"
+        run: "sudo winetricks --self-update"
       - name: "Run euroscope-afv-wine_install.sh --verbose --yes"
         run: |
           mkdir wine
