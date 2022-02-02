@@ -116,7 +116,7 @@ printf "  Current directory: %s\n" "$PWD" |
 printf "This program will only change files inside this directory. Anyways the built win environment has access to all files that your user has access to.\n"
 
 # check if required programs available in $PATH
-for prog in getopts pkill unzip grep wine winetricks wget command; do
+for prog in getopts unzip grep wine wineserver winetricks wget command; do
   if ! type $prog >/dev/null; then
     printf "%bERROR: we need the program ‹%s›\n%b" "${fError}" "$prog" "$fEnd"
     exit 1
@@ -124,6 +124,7 @@ for prog in getopts pkill unzip grep wine winetricks wget command; do
 done
 
 wineBin="$(command -v wine)"
+wineserverBin="$(command -v wineserver)"
 winetricksBin="$(command -v winetricks)"
 
 printf "\n%bInformation about your system:%b\n" "$fInfo" "$fEnd"
@@ -160,6 +161,13 @@ function wine() {
   WINEARCH=win32 WINEPREFIX="$PWD" "$wineBin" "$@" &>>"$logFilename"
 }
 
+function wineserver() {
+  printf "%bRunning \"WINEARCH=win32 WINEPREFIX=\"$PWD\" wineserver $*\"…\n%b" "$fStatus" "$fEnd" |
+    tee -a "$logFilename"
+  WINEARCH=win32 WINEPREFIX="$PWD" "$wineserverBin" "$@" &>>"$logFilename"
+}
+
+
 function winetricks() {
   printf "%bRunning \"WINEARCH=win32 WINEPREFIX=\"$PWD\" winetricks $*\"…\n%b" "$fStatus" "$fEnd" |
     tee -a "$logFilename"
@@ -169,7 +177,7 @@ function winetricks() {
 printf "\n%bConfiguring WINEPREFIX…\n%b" "$fSection" "$fEnd"
 
 printf "%bShutting down other wine processes…\n%b" "$fStatus" "$fEnd"
-pkill wineserver || true
+wineserver --kill || true
 
 # This env seems to circumvent the "Mono is missing" prompt
 WINEDLLOVERRIDES="mscoree=" wine wineboot
@@ -236,6 +244,6 @@ printf "    %bWINEARCH=win32 WINEPREFIX=$PWD winecfg\n%b" "$fInfo" "$fEnd"
 printf "  winetricks (try to solve dependency problems):\n"
 printf "    %bWINEARCH=win32 WINEPREFIX=$PWD winetricks\n%b" "$fInfo" "$fEnd"
 printf "  Stop rogue win processes:\n"
+printf "    %bWINEARCH=win32 WINEPREFIX=$PWD wine wineserver --kill\n%b" "$fInfo" "$fEnd"
 printf "    %bWINEARCH=win32 WINEPREFIX=$PWD wine wineboot --shutdown\n%b" "$fInfo" "$fEnd"
-printf "    %bpkill wine; pkill wineserver\n%b" "$fInfo" "$fEnd"
 
