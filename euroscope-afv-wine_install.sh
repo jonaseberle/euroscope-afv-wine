@@ -37,7 +37,7 @@ function shutdown() {
   printf "\n%bThis is a community effort. Please report findings and improvements on https://github.com/jonaseberle/euroscope-afv-wine%b\n" \
     "$fInfo" "$fEnd"
 }
-trap shutdown EXIT INT KILL TERM
+trap shutdown EXIT
 
 function usage() {
   printf "Usage: euroscope-afv-wine_install.sh [<options>]\n"
