@@ -7,6 +7,13 @@ If everything goes well, it does not require any additional interaction.
 As both the essential VATSIM ATC programs [EuroScope](https://www.euroscope.hu/) and
 [Audio for VATSIM](https://audio.vatsim.net/) are Windows-only (why?!), this uses `wine` as emulation layer.
 
+## Current state
+
+2022-02: This is incomplete. Audio for VATSIM does currently not run in neither wine 6 nor 7. Installing EuroScope in wine works though and runs fine.
+
+Recommendation: Support and use the freshly started Mac/Linux AfV client project [pierr3/VectorAudio](https://github.com/pierr3/VectorAudio).
+
+
 ## Remarks
 
 It installs the newest EuroScope beta version. We could make that an option if users need a choice there.
