@@ -191,6 +191,12 @@ winetricks --unattended dotnet461
 winetricks --unattended dotnet462
 winetricks --unattended dotnet472
 winetricks --unattended dotnet48
+
+# maybe necessary for AfV as reported by Cian Ormond
+winetricks --unattended dotnetcoredesktop3
+winetricks --unattended gdiplus
+winetricks --unattended wsh57
+
 winetricks --unattended iertutil
 winetricks --unattended msls31
 winetricks --unattended msxml6
