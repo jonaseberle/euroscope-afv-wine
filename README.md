@@ -42,7 +42,10 @@ wget https://raw.githubusercontent.com/jonaseberle/euroscope-afv-wine/main/euros
 # make executable
 chmod +x euroscope-afv-wine_install.sh
 
-# and execute it
+# check its options
+./euroscope-afv-wine_install.sh --help
+
+# .. and execute it
 ./euroscope-afv-wine_install.sh
 
 # it does some checks and asks you for confirmation before starting the installation

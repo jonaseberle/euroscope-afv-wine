@@ -43,6 +43,8 @@ function usage() {
   printf "Usage: euroscope-afv-wine_install.sh [<options>]\n"
   printf "  <options>:\n"
   printf "\t%-15s %s\n" "-h|--help" "this help"
+  printf "\t%-15s %s\n" "-a|--afv" "install only afv"
+  printf "\t%-15s %s\n" "-e|--euroscope" "install only EuroScope"
   printf "\t%-15s %s\n" "-y|--yes" "no confirmations"
   printf "\t%-15s %s\n" "-v|--verbose" "echo all script commands"
 }
@@ -56,8 +58,8 @@ function parseArgs() {
     exit 1
   fi
 
-  OPTIONS="yvh"
-  LONGOPTS="yes,verbose,help"
+  OPTIONS="yvhea"
+  LONGOPTS="yes,verbose,euroscope,afv,help"
 
   # -regarding ! and PIPESTATUS see above
   # -temporarily store output to be able to check for errors
@@ -75,6 +77,16 @@ function parseArgs() {
 
   while true; do
     case "$1" in
+    -a | --afv)
+      installEuroScope=0
+      installAfv=1
+      shift
+      ;;
+    -e | --euroscope)
+      installEuroScope=1
+      installAfv=0
+      shift
+      ;;
     -y | --yes)
       isForce=1
       shift
@@ -102,6 +114,8 @@ function parseArgs() {
 # arguments
 isForce=0
 isVerbose=0
+installEuroScope=1
+installAfv=1
 
 parseArgs "$@"
 
@@ -155,23 +169,26 @@ function download() {
   wget "$_url" -O "$_filename"
 }
 
+export WINEARCH=win64
+export WINEPREFIX="$PWD"
+
 function wine() {
-  printf "%bRunning \"WINEARCH=win32 WINEPREFIX=\"$PWD\" wine $*\"…\n%b" "$fStatus" "$fEnd" |
+  printf "%bRunning \"WINEARCH=$WINEARCH WINEPREFIX=\"$WINEPREFIX\" wine $*\"…\n%b" "$fStatus" "$fEnd" |
     tee -a "$logFilename"
-  WINEARCH=win32 WINEPREFIX="$PWD" "$wineBin" "$@" &>>"$logFilename"
+  "$wineBin" "$@" &>>"$logFilename"
 }
 
 function wineserver() {
-  printf "%bRunning \"WINEARCH=win32 WINEPREFIX=\"$PWD\" wineserver $*\"…\n%b" "$fStatus" "$fEnd" |
+  printf "%bRunning \"WINEARCH=$WINEARCH WINEPREFIX=\"$WINEPREFIX\" wineserver $*\"…\n%b" "$fStatus" "$fEnd" |
     tee -a "$logFilename"
-  WINEARCH=win32 WINEPREFIX="$PWD" "$wineserverBin" "$@" &>>"$logFilename"
+  "$wineserverBin" "$@" &>>"$logFilename"
 }
 
 
 function winetricks() {
-  printf "%bRunning \"WINEARCH=win32 WINEPREFIX=\"$PWD\" winetricks $*\"…\n%b" "$fStatus" "$fEnd" |
+  printf "%bRunning \"WINEARCH=$WINEARCH WINEPREFIX=\"$WINEPREFIX\" winetricks $*\"…\n%b" "$fStatus" "$fEnd" |
     tee -a "$logFilename"
-  WINEARCH=win32 WINEPREFIX="$PWD" "$winetricksBin" "$@" &>>"$logFilename"
+  "$winetricksBin" "$@" &>>"$logFilename"
 }
 
 printf "\n%bConfiguring WINEPREFIX…\n%b" "$fSection" "$fEnd"
@@ -180,57 +197,62 @@ printf "%bShutting down other wine processes…\n%b" "$fStatus" "$fEnd"
 wineserver --kill || true
 
 # This env seems to circumvent the "Mono is missing" prompt
-WINEDLLOVERRIDES="mscoree=" wine wineboot
+#WINEDLLOVERRIDES="mscoree=" 
+wine wineboot --init
 wine winecfg -v win7
+"$wineBin" winecfg -v
 
-printf "\n%bInstalling libs…\n%b" "$fSection" "$fEnd"
-winetricks --unattended dotnet40
-winetricks --unattended dotnet45
-winetricks --unattended dotnet46
-winetricks --unattended dotnet461
-winetricks --unattended dotnet462
-winetricks --unattended dotnet472
-winetricks --unattended dotnet48
+if [ $installAfv == 1 ]; then
+  printf "\n%bInstalling libs for AfV…\n%b" "$fSection" "$fEnd"
+  winetricks --unattended dotnet40
+  winetricks --unattended dotnet45
+  winetricks --unattended dotnet46
+  winetricks --unattended dotnet461
+  winetricks --unattended dotnet462
+  winetricks --unattended dotnet472
+  winetricks --unattended dotnet48
 
-# maybe necessary for AfV as reported by Cian Ormond
-winetricks --unattended dotnetcoredesktop3
-winetricks --unattended gdiplus
-winetricks --unattended wsh57
+  # maybe necessary for AfV as reported by Cian Ormond
+  winetricks --unattended dotnetcoredesktop3
+  winetricks --unattended gdiplus
+  winetricks --unattended wsh57
 
-winetricks --unattended iertutil
-winetricks --unattended msls31
-winetricks --unattended msxml6
-winetricks --unattended urlmon
-winetricks --unattended vcrun2010
-winetricks --unattended vcrun2017
-winetricks --unattended wininet
+  printf "%bDownloading Audio for VATSIM…\n%b" "$fStatus" "$fEnd"
+  afvFilename="Audio for VATSIM.msi"
+  download https://audio.vatsim.net/downloads/standalone "$afvFilename"
 
-printf "\n%bDownloading programs…\n%b" "$fSection" "$fEnd"
+  printf "%bInstalling Audio for VATSIM…\n%b" "$fSection" "$fEnd"
+  wine msiexec /q /l "euroscope-afv-wine_msiexec-afv.log" /i "$afvFilename"
+fi
 
-printf "%bDownloading EuroScope…\n%b" "$fStatus" "$fEnd"
-esFilename="EuroScopeSetup32.msi"
-download https://www.euroscope.hu/install/EuroScopeSetup32.msi "$esFilename"
 
-printf "%bInstalling EuroScope…\n%b" "$fSection" "$fEnd"
-wine msiexec /q /l "euroscope-afv-wine_msiexec-es.log" /i "$esFilename"
+if [ $installEuroScope == 1 ]; then
+  printf "\n%bInstalling libs for EuroScope…\n%b" "$fSection" "$fEnd"
+  winetricks --unattended iertutil
+  winetricks --unattended msls31
+  winetricks --unattended msxml6
+  winetricks --unattended urlmon
+  winetricks --unattended vcrun2010
+  winetricks --unattended vcrun2017
+  winetricks --unattended wininet
 
-# find link "Download latest beta" on EuroScope homepage
-printf "%bFinding link \"latest beta\" on EuroScope homepage…\n%b" "$fStatus" "$fEnd"
-download https://www.euroscope.hu/wp/ es-index.html
-_esBetaUrl=$(grep -Eo '<a.*>Download latest beta' es-index.html | grep -Eo 'http.*\.zip')
-printf "%bDownloading EuroScope beta…\n%b" "$fStatus" "$fEnd"
-esBetaFilename="EuroScope-Beta.zip"
-download "$_esBetaUrl" "$esBetaFilename"
+  printf "%bDownloading EuroScope…\n%b" "$fStatus" "$fEnd"
+  esFilename="EuroScopeSetup32.msi"
+  download https://www.euroscope.hu/install/EuroScopeSetup32.msi "$esFilename"
 
-printf "%bApplying EuroScope beta…\n%b" "$fSection" "$fEnd"
-unzip -o $esBetaFilename -d drive_c/Program\ Files/EuroScope/
+  printf "%bInstalling EuroScope…\n%b" "$fSection" "$fEnd"
+  wine msiexec /q /l "euroscope-afv-wine_msiexec-es.log" /i "$esFilename"
+  # find link "Download latest beta" on EuroScope homepage
+  printf "%bFinding link \"latest beta\" on EuroScope homepage…\n%b" "$fStatus" "$fEnd"
+  download https://www.euroscope.hu/wp/ es-index.html
+  _esBetaUrl=$(grep -Eo '<a.*>Download latest beta' es-index.html | grep -Eo 'http.*\.zip')
+  printf "%bDownloading EuroScope beta…\n%b" "$fStatus" "$fEnd"
+  esBetaFilename="EuroScope-Beta.zip"
+  download "$_esBetaUrl" "$esBetaFilename"
 
-printf "%bDownloading Audio for VATSIM…\n%b" "$fStatus" "$fEnd"
-afvFilename="Audio for VATSIM.msi"
-download https://audio.vatsim.net/downloads/standalone "$afvFilename"
-
-printf "%bInstalling Audio for VATSIM…\n%b" "$fSection" "$fEnd"
-wine msiexec /q /l "euroscope-afv-wine_msiexec-afv.log" /i "$afvFilename"
+  printf "%bApplying EuroScope beta…\n%b" "$fSection" "$fEnd"
+  unzip -o $esBetaFilename -d drive_c/Program\ Files/EuroScope/
+fi
 
 printf "%bSimulating shutdown…\n%b" "$fInfo" "$fEnd"
 wine wineboot --shutdown
@@ -240,16 +262,16 @@ printf "You can run them from your start menu (entries are in %s)\n" "$HOME/.loc
 printf "or from the command line:\n"
 
 printf "\nAudio for VATSIM:\n"
-printf "  %bWINEDEBUG=-all WINEPREFIX=$PWD wine \"$PWD/drive_c/AudioForVATSIM/AudioForVATSIM.exe\"\n%b" "$fInfo" "$fEnd"
+printf "  %bWINEDEBUG=-all WINEPREFIX=$WINEPREFIX wine \"$PWD/drive_c/AudioForVATSIM/AudioForVATSIM.exe\"\n%b" "$fInfo" "$fEnd"
 printf "\nEuroScope:\n"
-printf "  %bWINEDEBUG=-all WINEPREFIX=$PWD wine \"$PWD/drive_c/Program Files/EuroScope/EuroScope.exe\"\n%b" "$fInfo" "$fEnd"
+printf "  %bWINEDEBUG=-all WINEPREFIX=$WINEPREFIX wine \"$PWD/drive_c/Program Files/EuroScope/EuroScope.exe\"\n%b" "$fInfo" "$fEnd"
 
 printf "\nUseful tools:\n"
 printf "  winecfg (wine confguration, for example: set up your Documents folder):\n"
-printf "    %bWINEARCH=win32 WINEPREFIX=$PWD winecfg\n%b" "$fInfo" "$fEnd"
+printf "    %bWINEARCH=win32 WINEPREFIX=$WINEPREFIX winecfg\n%b" "$fInfo" "$fEnd"
 printf "  winetricks (try to solve dependency problems):\n"
-printf "    %bWINEARCH=win32 WINEPREFIX=$PWD winetricks\n%b" "$fInfo" "$fEnd"
+printf "    %bWINEARCH=win32 WINEPREFIX=$WINEPREFIX winetricks\n%b" "$fInfo" "$fEnd"
 printf "  Stop rogue win processes:\n"
-printf "    %bWINEARCH=win32 WINEPREFIX=$PWD wine wineserver --kill\n%b" "$fInfo" "$fEnd"
-printf "    %bWINEARCH=win32 WINEPREFIX=$PWD wine wineboot --shutdown\n%b" "$fInfo" "$fEnd"
+printf "    %bWINEARCH=win32 WINEPREFIX=$WINEPREFIX wine wineserver --kill\n%b" "$fInfo" "$fEnd"
+printf "    %bWINEARCH=win32 WINEPREFIX=$WINEPREFIX wine wineboot --shutdown\n%b" "$fInfo" "$fEnd"
 
