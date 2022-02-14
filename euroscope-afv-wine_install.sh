@@ -232,8 +232,9 @@ if [ $installEuroScope == 1 ]; then
   winetricks --unattended msls31
   winetricks --unattended msxml6
   winetricks --unattended urlmon
-  winetricks --unattended vcrun2010
-  winetricks --unattended vcrun2017
+  #winetricks --unattended vcrun2010
+  #winetricks --unattended vcrun2017
+  winetricks --unattended vcrun2019
   winetricks --unattended wininet
 
   printf "%bDownloading EuroScope…\n%b" "$fStatus" "$fEnd"
@@ -268,10 +269,10 @@ printf "  %bWINEDEBUG=-all WINEPREFIX=$WINEPREFIX wine \"$PWD/drive_c/Program Fi
 
 printf "\nUseful tools:\n"
 printf "  winecfg (wine confguration, for example: set up your Documents folder):\n"
-printf "    %bWINEARCH=win32 WINEPREFIX=$WINEPREFIX winecfg\n%b" "$fInfo" "$fEnd"
+printf "    %bWINEARCH=$WINEARCH WINEPREFIX=$WINEPREFIX winecfg\n%b" "$fInfo" "$fEnd"
 printf "  winetricks (try to solve dependency problems):\n"
-printf "    %bWINEARCH=win32 WINEPREFIX=$WINEPREFIX winetricks\n%b" "$fInfo" "$fEnd"
+printf "    %bWINEARCH=$WINEARCH WINEPREFIX=$WINEPREFIX winetricks\n%b" "$fInfo" "$fEnd"
 printf "  Stop rogue win processes:\n"
-printf "    %bWINEARCH=win32 WINEPREFIX=$WINEPREFIX wine wineserver --kill\n%b" "$fInfo" "$fEnd"
-printf "    %bWINEARCH=win32 WINEPREFIX=$WINEPREFIX wine wineboot --shutdown\n%b" "$fInfo" "$fEnd"
+printf "    %bWINEARCH=$WINEARCH WINEPREFIX=$WINEPREFIX wine wineserver --kill\n%b" "$fInfo" "$fEnd"
+printf "    %bWINEARCH=$WINEARCH WINEPREFIX=$WINEPREFIX wine wineboot --shutdown\n%b" "$fInfo" "$fEnd"
 
