@@ -1,6 +1,6 @@
-# VATSIM EuroScope and AfV on wine
+# VATSIM EuroScope and Audio for VATSIM on non-Windows
 
-This is a script that's meant to facilitate installing an ATC-environment for Linux users.
+This is a script that's meant to facilitate installing an ATC-environment for Linux/Mac users.
 
 If everything goes well, it does not require any additional interaction.
 
@@ -10,12 +10,13 @@ As both the essential VATSIM ATC programs [EuroScope](https://www.euroscope.hu/)
 ## Current recommendation
 
 2022-02: Audio for VATSIM does currently not run in neither wine 6 nor 7. Installing EuroScope in wine works though and runs fine.
+But we don't need Audio for VATSIM any more because 
 
 Recommendation: 
 
 Use this script only to install EuroScope and its newest beta (see "Usage" below).
 
-For audio use the Mac/Linux AfV client project [pierr3/VectorAudio](https://github.com/pierr3/VectorAudio).
+For audio use the Mac/Linux AfV client project [pierr3/VectorAudio](https://github.com/pierr3/VectorAudio). You can find downloads under "[Releases](https://github.com/pierr3/VectorAudio/releases)".
 This is in beta state but mostly usable. It needs people testing it. Please report problems with it on [pierr3/VectorAudio issues](https://github.com/pierr3/VectorAudio/issues).
 
 
