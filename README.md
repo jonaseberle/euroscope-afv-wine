@@ -10,7 +10,7 @@ As both the essential VATSIM ATC programs [EuroScope](https://www.euroscope.hu/)
 ## Current recommendation
 
 2022-02: Audio for VATSIM does currently not run in neither wine 6 nor 7. Installing EuroScope in wine works though and runs fine.
-But we don't need Audio for VATSIM any more because 
+But we don't need Audio for VATSIM any more because there is now a project that aims to provide a native client for all platforms. 
 
 Recommendation: 
 
