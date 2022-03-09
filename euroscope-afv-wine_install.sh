@@ -45,6 +45,7 @@ function usage() {
   printf "\t%-15s %s\n" "-h|--help" "this help"
   printf "\t%-15s %s\n" "-a|--afv" "install only afv"
   printf "\t%-15s %s\n" "-e|--euroscope" "install only EuroScope"
+  printf "\t%-15s %s\n" "-B|--no-euroscope-beta" "do not install EuroScope beta"
   printf "\t%-15s %s\n" "-y|--yes" "no confirmations"
   printf "\t%-15s %s\n" "-v|--verbose" "echo all script commands"
 }
@@ -58,8 +59,8 @@ function parseArgs() {
     exit 1
   fi
 
-  OPTIONS="yvhea"
-  LONGOPTS="yes,verbose,euroscope,afv,help"
+  OPTIONS="yvheaB"
+  LONGOPTS="yes,verbose,euroscope,no-euroscope-beta,afv,help"
 
   # -regarding ! and PIPESTATUS see above
   # -temporarily store output to be able to check for errors
@@ -80,6 +81,10 @@ function parseArgs() {
     -a | --afv)
       installEuroScope=0
       installAfv=1
+      shift
+      ;;
+    -B | --no-euroscope-beta)
+      euroScopeBeta=0
       shift
       ;;
     -e | --euroscope)
@@ -115,6 +120,7 @@ function parseArgs() {
 isForce=0
 isVerbose=0
 installEuroScope=1
+euroScopeBeta=1
 installAfv=1
 
 parseArgs "$@"
@@ -170,6 +176,10 @@ function download() {
 }
 
 export WINEARCH=win64
+[ $WINEARCH = win32 ] \
+  && esDir="drive_c/Program Files/EuroScope/" \
+  || esDir="drive_c/Program Files (x86)/EuroScope/"
+
 export WINEPREFIX="$PWD"
 
 function wine() {
@@ -239,20 +249,24 @@ if [ $installEuroScope == 1 ]; then
 
   printf "%bDownloading EuroScope…\n%b" "$fStatus" "$fEnd"
   esFilename="EuroScopeSetup32.msi"
+  # EuroScope is a 32-bit program, but can run in 64-bit Windows with WoW64
   download https://www.euroscope.hu/install/EuroScopeSetup32.msi "$esFilename"
 
   printf "%bInstalling EuroScope…\n%b" "$fSection" "$fEnd"
   wine msiexec /q /l "euroscope-afv-wine_msiexec-es.log" /i "$esFilename"
-  # find link "Download latest beta" on EuroScope homepage
-  printf "%bFinding link \"latest beta\" on EuroScope homepage…\n%b" "$fStatus" "$fEnd"
-  download https://www.euroscope.hu/wp/ es-index.html
-  _esBetaUrl=$(grep -Eo '<a.*>Download latest beta' es-index.html | grep -Eo 'http.*\.zip')
-  printf "%bDownloading EuroScope beta…\n%b" "$fStatus" "$fEnd"
-  esBetaFilename="EuroScope-Beta.zip"
-  download "$_esBetaUrl" "$esBetaFilename"
 
-  printf "%bApplying EuroScope beta…\n%b" "$fSection" "$fEnd"
-  unzip -o $esBetaFilename -d drive_c/Program\ Files/EuroScope/
+  if [ $euroScopeBeta == 1 ]; then
+    # find link "Download latest beta" on EuroScope homepage
+    printf "%bFinding link \"latest beta\" on EuroScope homepage…\n%b" "$fStatus" "$fEnd"
+    download https://www.euroscope.hu/wp/ es-index.html
+    _esBetaUrl=$(grep -Eo '<a.*>Download latest beta' es-index.html | grep -Eo 'http.*\.zip')
+    printf "%bDownloading EuroScope beta…\n%b" "$fStatus" "$fEnd"
+    esBetaFilename="EuroScope-Beta.zip"
+    download "$_esBetaUrl" "$esBetaFilename"
+
+    printf "%bApplying EuroScope beta…\n%b" "$fSection" "$fEnd"
+    unzip -o "$esBetaFilename" -d "$esDir"
+  fi
 fi
 
 printf "%bSimulating shutdown…\n%b" "$fInfo" "$fEnd"
@@ -262,10 +276,14 @@ printf "\n%bInstallation of EuroScope and AfV is finished.\n%b" "$fSection" "$fE
 printf "You can run them from your start menu (entries are in %s)\n" "$HOME/.local/share/applications/wine"
 printf "or from the command line:\n"
 
-printf "\nAudio for VATSIM:\n"
-printf "  %bWINEDEBUG=-all WINEPREFIX=$WINEPREFIX wine \"$PWD/drive_c/AudioForVATSIM/AudioForVATSIM.exe\"\n%b" "$fInfo" "$fEnd"
-printf "\nEuroScope:\n"
-printf "  %bWINEDEBUG=-all WINEPREFIX=$WINEPREFIX wine \"$PWD/drive_c/Program Files/EuroScope/EuroScope.exe\"\n%b" "$fInfo" "$fEnd"
+if [ $installAfv == 1 ]; then
+  printf "\nAudio for VATSIM:\n"
+  printf "  %bWINEDEBUG=-all WINEPREFIX=$WINEPREFIX wine \"$PWD/drive_c/AudioForVATSIM/AudioForVATSIM.exe\"\n%b" "$fInfo" "$fEnd"
+fi
+if [ $installEuroScope == 1 ]; then
+  printf "\nEuroScope:\n"
+  printf "  %bWINEDEBUG=-all WINEPREFIX=$WINEPREFIX wine \"$PWD/${esDir}EuroScope.exe\"\n%b" "$fInfo" "$fEnd"
+fi
 
 printf "\nUseful tools:\n"
 printf "  winecfg (wine confguration, for example: set up your Documents folder):\n"
@@ -276,3 +294,4 @@ printf "  Stop rogue win processes:\n"
 printf "    %bWINEARCH=$WINEARCH WINEPREFIX=$WINEPREFIX wine wineserver --kill\n%b" "$fInfo" "$fEnd"
 printf "    %bWINEARCH=$WINEARCH WINEPREFIX=$WINEPREFIX wine wineboot --shutdown\n%b" "$fInfo" "$fEnd"
 
+# vim: tabstop=4 expandtab shiftwidth=2 softtabstop=2
