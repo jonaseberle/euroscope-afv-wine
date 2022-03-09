@@ -74,8 +74,10 @@ browsers, too. This can be adjusted with `winecfg`. EuroScope expects its settin
 
 ## Known issues:
 
+* 2022-03: Arch/Manjaro's wine 7.3 is not able to start EuroScope. The problem is [this Arch/wine bug](https://bugs.winehq.org/show_bug.cgi?id=52614).
+  Workaround: use the package `wine-staging`. 
 * Audio for VATSIM sometimes starts fine, then on another day it might not start any more. It probably has something to
-  do with its internal updater.
+  do with its internal updater. Recommendation: Do not install AfV via wine (use `--euroscope` command line switch).
 * EuroScope hangs on quitting, after saving changed settings.
   ([WineHQ AppDB entry](https://appdb.winehq.org/objectManager.php?sClass=version&iId=32239))
 * [AFV_BRIDGE](https://github.com/AndyTWF/afv-euroscope-bridge) does not work. EuroScope
