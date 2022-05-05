@@ -9,12 +9,12 @@ As both the essential VATSIM ATC programs [EuroScope](https://www.euroscope.hu/)
 
 ## Current recommendation
 
-2022-02: Audio for VATSIM does currently not run in neither wine 6 nor 7. Installing EuroScope in wine works though and runs fine.
+2022-02: Audio for VATSIM does currently not run with `wine`. Installing EuroScope in `wine` works though and runs fine.
 But we don't need Audio for VATSIM any more because there is now a project that aims to provide a native client for all platforms. 
 
 Recommendation: 
 
-Use this script only to install EuroScope and its newest beta (see "Usage" below).
+Use this script only to install EuroScope and its newest beta (`./euroscope-afv-wine_install.sh --euroscope`) (see "Usage" below).
 
 For audio use the Mac/Linux AfV client project [pierr3/VectorAudio](https://github.com/pierr3/VectorAudio). You can find downloads under "[Releases](https://github.com/pierr3/VectorAudio/releases)".
 This is in beta state but mostly usable. It needs people testing it. Please report problems with it on [pierr3/VectorAudio issues](https://github.com/pierr3/VectorAudio/issues).
@@ -67,6 +67,7 @@ browsers, too. This can be adjusted with `winecfg`. EuroScope expects its settin
 
 ## Tested with:
 
+* wine 7.5
 * wine 7.0-rc5
 * wine 6
 * Manjaro, Ubuntu 20.4
