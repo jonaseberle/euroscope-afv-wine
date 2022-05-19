@@ -36,6 +36,18 @@ See [Wine Sound](https://wiki.winehq.org/Sound) for more information.
 
 ## Usage:
 
+```
+# ./euroscope-afv-wine_install.sh --help
+Usage: euroscope-afv-wine_install.sh [<options>]
+  <options>:
+        -h|--help       this help
+        -a|--afv        install only afv
+        -e|--euroscope  install only EuroScope
+        -B|--no-euroscope-beta do not install EuroScope beta
+        -y|--yes        no confirmations
+        -v|--verbose    echo all script commands
+```
+
 ```bash
 # create a new directory for your wine environment and change into it
 wineDir=$USER/VATSIM-ATC/wine
