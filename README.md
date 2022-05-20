@@ -20,19 +20,11 @@ For audio use the Mac/Linux AfV client project [pierr3/VectorAudio](https://gith
 This is in beta state but mostly usable. It needs people testing it. Please report problems with it on [pierr3/VectorAudio issues](https://github.com/pierr3/VectorAudio/issues).
 
 
-## Remarks
-
-It installs the newest EuroScope beta version. We could make that an option if users need a choice there.
-
-`wine` integrates into your host's audio system and registers all application audio channels there. Thus, just select
-the "default" audio device in the Windows applications and do the routing in your host.
-See [Wine Sound](https://wiki.winehq.org/Sound) for more information.
-
 ## Requirements:
 
 * `bash`, `unzip`, `grep`, `wget`
 * `wine` and `winetricks`. Suggested (unsure if needed): Packaged `wine-gecko` and `wine-mono`
-* There will be a warning if it misses something it needs.
+* You will see a warning if something is missing.
 
 ## Usage:
 
@@ -64,16 +56,8 @@ chmod +x euroscope-afv-wine_install.sh
 ./euroscope-afv-wine_install.sh --help
 
 # .. and execute it
-# current recommendation: only install EuroScope, use VECTOR audio (https://github.com/pierr3/VectorAudio)
-# for audio:
 ./euroscope-afv-wine_install.sh --euroscope
-
-# it does some checks and asks you for confirmation before starting the installation
 ```
-
-... expect around 15min until the installation is finished. If everything worked ok, you will be able to start EuroScope
-and Audio for VATSIM via your usual applications menu.
-
 You'll find your configured "Documents" directory (`xdg-user-dir DOCUMENTS`) labelled "Documents" in the Windows file
 browsers, too. This can be adjusted with `winecfg`. EuroScope expects its settings files at `"Documents"/EuroScope`.
 
@@ -90,7 +74,7 @@ browsers, too. This can be adjusted with `winecfg`. EuroScope expects its settin
 * 2022-03: Arch/Manjaro's wine 7.3 is not able to start EuroScope. The problem is [this Arch/wine bug](https://bugs.winehq.org/show_bug.cgi?id=52614).
   Workaround: use the package `wine-staging`. 
 * Audio for VATSIM sometimes starts fine, then on another day it might not start any more. It probably has something to
-  do with its internal updater. Recommendation: Do not install AfV via wine (use `--euroscope` command line switch).
+  do with its internal updater. Recommendation: Do not install AfV.
 * EuroScope hangs on quitting, after saving changed settings.
   ([WineHQ AppDB entry](https://appdb.winehq.org/objectManager.php?sClass=version&iId=32239))
 * [AFV_BRIDGE](https://github.com/AndyTWF/afv-euroscope-bridge) does not work. EuroScope
@@ -117,5 +101,5 @@ Contributions of any form are very welcome. You can approach me via the "discuss
 
 This is built on top of the work of Samir Gebran https://forums.vatsim.net/topic/31019-euroscope-on-linux-howto/.
 
-Thank you to the creators of EuroScope and Audio for VATSIM. I think both are very able and intelligent programs. Maybe
-next time do something more portable.
+Thank you to the creators of the EuroScope and Audio for VATSIM programs. 
+It is a pity that they are not available cross-platform natively.
