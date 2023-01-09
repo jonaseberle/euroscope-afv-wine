@@ -185,20 +185,20 @@ export WINEPREFIX="$PWD"
 function wine() {
   printf "%bRunning \"WINEARCH=$WINEARCH WINEPREFIX=\"$WINEPREFIX\" wine $*\"…\n%b" "$fStatus" "$fEnd" |
     tee -a "$logFilename"
-  "$wineBin" "$@" &>>"$logFilename"
+  "$wineBin" "$@" >>"$logFilename" 2>&1
 }
 
 function wineserver() {
   printf "%bRunning \"WINEARCH=$WINEARCH WINEPREFIX=\"$WINEPREFIX\" wineserver $*\"…\n%b" "$fStatus" "$fEnd" |
     tee -a "$logFilename"
-  "$wineserverBin" "$@" &>>"$logFilename"
+  "$wineserverBin" "$@" >>"$logFilename" 2>&1
 }
 
 
 function winetricks() {
   printf "%bRunning \"WINEARCH=$WINEARCH WINEPREFIX=\"$WINEPREFIX\" winetricks $*\"…\n%b" "$fStatus" "$fEnd" |
     tee -a "$logFilename"
-  "$winetricksBin" "$@" &>>"$logFilename"
+  "$winetricksBin" "$@" >>"$logFilename" 2>&1
 }
 
 printf "\n%bConfiguring WINEPREFIX…\n%b" "$fSection" "$fEnd"
