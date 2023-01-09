@@ -10,11 +10,11 @@ As both the essential VATSIM ATC programs [EuroScope](https://www.euroscope.hu/)
 ## Current recommendation
 
 2022-02: Audio for VATSIM does currently not run with `wine`. Installing EuroScope in `wine` works though and runs fine.
-But we don't need Audio for VATSIM any more because there is now a project that aims to provide a native client for all platforms. 
+But we don't need Audio for VATSIM any more because there is now a project that aims to provide a native client for all platforms:. 
 
 Recommendation: 
 
-Use this script only to install EuroScope and its newest beta (`./euroscope-afv-wine_install.sh --euroscope`) (see "Usage" below).
+Use this script to only install EuroScope and its newest beta (`./euroscope-afv-wine_install.sh --euroscope`) (see "Usage" below).
 
 For audio use the Mac/Linux AfV client project [pierr3/VectorAudio](https://github.com/pierr3/VectorAudio). You can find downloads under "[Releases](https://github.com/pierr3/VectorAudio/releases)".
 This is in beta state but mostly usable. It needs people testing it. Please report problems with it on [pierr3/VectorAudio issues](https://github.com/pierr3/VectorAudio/issues).
@@ -24,7 +24,8 @@ This is in beta state but mostly usable. It needs people testing it. Please repo
 
 * `bash`, `unzip`, `grep`, `wget`
 * `wine` and `winetricks`. Suggested (unsure if needed): Packaged `wine-gecko` and `wine-mono`
-* You will see a warning if something is missing.
+
+You will see a warning if something is missing.
 
 ## Usage:
 
@@ -63,16 +64,13 @@ browsers, too. This can be adjusted with `winecfg`. EuroScope expects its settin
 
 ## Tested with:
 
-* wine 7.5
-* wine 7.0-rc5
-* wine 6
-* Manjaro, Ubuntu 20.4
+* wine 6, 7.0-rc5, 7.5, 7.22, 8.0-rc1
+* Manjaro, Ubuntu 20.4, openSUSE Tumbleweed
 * please report your successes/failures with other environments
 
 ## Known issues:
 
 * 2022-03: Arch/Manjaro's wine 7.3 is not able to start EuroScope. The problem is [this Arch/wine bug](https://bugs.winehq.org/show_bug.cgi?id=52614).
-  Workaround: use the package `wine-staging`. 
 * Audio for VATSIM sometimes starts fine, then on another day it might not start any more. It probably has something to
   do with its internal updater. Recommendation: Do not install AfV.
 * EuroScope hangs on quitting, after saving changed settings.
