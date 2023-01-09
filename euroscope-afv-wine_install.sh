@@ -42,12 +42,13 @@ trap shutdown EXIT
 function usage() {
   printf "Usage: euroscope-afv-wine_install.sh [<options>]\n"
   printf "  <options>:\n"
-  printf "\t%-15s %s\n" "-h|--help" "this help"
-  printf "\t%-15s %s\n" "-a|--afv" "install only afv"
-  printf "\t%-15s %s\n" "-e|--euroscope" "install only EuroScope"
-  printf "\t%-15s %s\n" "-B|--no-euroscope-beta" "do not install EuroScope beta"
-  printf "\t%-15s %s\n" "-y|--yes" "no confirmations"
-  printf "\t%-15s %s\n" "-v|--verbose" "echo all script commands"
+  printf "\t%-23s %s\n" "-h|--help" "this help"
+  printf "\t%-23s %s\n" "-a|--afv" "install only afv"
+  printf "\t%-23s %s\n" "-e|--euroscope" "install only EuroScope"
+  printf "\t%-23s %s\n" "-B|--no-euroscope-beta" "do not install latest EuroScope beta"
+  printf "\t%-23s %s\n" "-y|--yes" "no confirmations"
+  printf "\t%-23s %s\n" "--cached" "use cached versions of already downloaded files"
+  printf "\t%-23s %s\n" "-v|--verbose" "echo all script commands"
 }
 
 function parseArgs() {
@@ -60,7 +61,7 @@ function parseArgs() {
   fi
 
   OPTIONS="yvheaB"
-  LONGOPTS="yes,verbose,euroscope,no-euroscope-beta,afv,help"
+  LONGOPTS="yes,verbose,euroscope,no-euroscope-beta,afv,help,cached"
 
   # -regarding ! and PIPESTATUS see above
   # -temporarily store output to be able to check for errors
@@ -85,6 +86,10 @@ function parseArgs() {
       ;;
     -B | --no-euroscope-beta)
       euroScopeBeta=0
+      shift
+      ;;
+    --cached)
+      useDownloadCache=1
       shift
       ;;
     -e | --euroscope)
@@ -122,6 +127,7 @@ isVerbose=0
 installEuroScope=1
 euroScopeBeta=1
 installAfv=1
+useDownloadCache=0
 
 parseArgs "$@"
 
@@ -130,7 +136,6 @@ if [ $isVerbose == 1 ]; then
 fi
 
 echo "The current directory will be used to setup EuroScope/AfV with wine."
-printf "  Suggestion:        %s\n" "$HOME/VATSIM-ATC/wine"
 printf "  Current directory: %s\n" "$PWD" |
   tee -a "$logFilename"
 printf "This program will only change files inside this directory. Anyways the built win environment has access to all files that your user has access to.\n"
@@ -166,9 +171,15 @@ function download() {
   local _url="$1"
   local _filename="$2"
   if [ -f "$_filename" ]; then
-    printf "%bFound ‹%s› in current directory. Not downloading from ‹%s›.\n%b" "$fStatus" "$_filename" "$_url" "$fEnd" |
-      tee -a "$logFilename"
-    return 0
+    if [ $useDownloadCache == 1 ]; then
+      printf "%bUsing cached ‹%s› from current directory. Not downloading from ‹%s›.\n%b" "$fStatus" "$_filename" "$_url" "$fEnd" |
+        tee -a "$logFilename"
+      return 0
+    else
+      printf "%bDeleting existing ‹%s› from current directory.\n%b" "$fStatus" "$_filename" "$fEnd" |
+        tee -a "$logFilename"
+      rm "$_filename"
+    fi
   fi
   printf "%bDownloading ‹%s› to current directory…\n%b" "$fStatus" "$_url" "$fEnd" |
     tee -a "$logFilename"
@@ -260,7 +271,7 @@ if [ $installEuroScope == 1 ]; then
     printf "%bFinding link \"latest beta\" on EuroScope homepage…\n%b" "$fStatus" "$fEnd"
     download https://www.euroscope.hu/wp/ es-index.html
     _esBetaUrl=$(grep -Eo '<a.*>Download latest beta' es-index.html | grep -Eo 'http.*\.zip')
-    printf "%bDownloading EuroScope beta…\n%b" "$fStatus" "$fEnd"
+    printf "%bFound link to latest beta on homepage. Downloading EuroScope beta…\n%b" "$fStatus" "$fEnd"
     esBetaFilename="EuroScope-Beta.zip"
     download "$_esBetaUrl" "$esBetaFilename"
 

@@ -38,6 +38,7 @@ Usage: euroscope-afv-wine_install.sh [<options>]
         -e|--euroscope  install only EuroScope
         -B|--no-euroscope-beta do not install EuroScope beta
         -y|--yes        no confirmations
+        --cached        use cached versions of already downloaded files
         -v|--verbose    echo all script commands
 ```
 
