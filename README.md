@@ -14,10 +14,10 @@ But we don't need Audio for VATSIM any more because there is now a project that 
 
 Recommendation: 
 
-Use this script to only install EuroScope and its newest beta (`./euroscope-afv-wine_install.sh --euroscope`) (see "Usage" below).
+Use this script only to install EuroScope (see "Usage" below).
 
 For audio use the Mac/Linux AfV client project [pierr3/VectorAudio](https://github.com/pierr3/VectorAudio). You can find downloads under "[Releases](https://github.com/pierr3/VectorAudio/releases)".
-This is in beta state but mostly usable. It needs people testing it. Please report problems with it on [pierr3/VectorAudio issues](https://github.com/pierr3/VectorAudio/issues).
+This is in beta state but very usable. It needs people testing it. Please report problems with it on [pierr3/VectorAudio issues](https://github.com/pierr3/VectorAudio/issues).
 
 
 ## Requirements:
@@ -42,30 +42,33 @@ Usage: euroscope-afv-wine_install.sh [<options>]
         -v|--verbose    echo all script commands
 ```
 
+### Quickstart
+
 ```bash
 # create a new directory for your wine environment and change into it
 wineDir=$USER/VATSIM-ATC/wine
 mkdir -p "$wineDir"
 cd "$wineDir"
 
-# download the installer script
-wget https://raw.githubusercontent.com/jonaseberle/euroscope-afv-wine/main/euroscope-afv-wine_install.sh
+# clone this repo
+git clone https://github.com/jonaseberle/euroscope-afv-wine.git && cd euroscope-afv-wine
 
-# make executable
+# make the installer script executable
 chmod +x euroscope-afv-wine_install.sh
 
-# check its options
-./euroscope-afv-wine_install.sh --help
+# switch into a directory where the wine environment will be created
+mkdir -p wine && cd wine
 
-# .. and execute it
-./euroscope-afv-wine_install.sh --euroscope
+# check the script options
+../euroscope-afv-wine_install.sh --help
+
+# .. and install EuroScope with it
+../euroscope-afv-wine_install.sh --euroscope --no-euroscope-beta
 ```
-You'll find your configured "Documents" directory (`xdg-user-dir DOCUMENTS`) labelled "Documents" in the Windows file
-browsers, too. This can be adjusted with `winecfg`. EuroScope expects its settings files at `"Documents"/EuroScope`.
 
 ## Tested with:
 
-* wine 6, 7.0-rc5, 7.5, 7.22, 8.0-rc1
+* wine 6, 7.0-rc5, 7.5, 7.22, 8.0-rc1, 8.1
 * Manjaro, Ubuntu 20.4, openSUSE Tumbleweed
 * please report your successes/failures with other environments
 
