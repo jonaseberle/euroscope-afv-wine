@@ -1,6 +1,7 @@
 #!/bin/bash
 # Installs VATSIM ATC software (EuroScope and Audio for VATSIM) into a wine environment
 # Building on top of the work of Samir Gebran https://forums.vatsim.net/topic/31019-euroscope-on-linux-howto/
+# EuroScope is a 32-bit program, but can run in 64-bit Windows with WoW64
 # License: MIT
 
 # saner programming env: these switches turn some bugs into errors
@@ -172,7 +173,7 @@ function download() {
   local _filename="$2"
   if [ -f "$_filename" ]; then
     if [ $useDownloadCache == 1 ]; then
-      printf "%bUsing cached ‹%s› from current directory. Not downloading from ‹%s›.\n%b" "$fStatus" "$_filename" "$_url" "$fEnd" |
+      printf "%bINFO[cache]: Using cached ‹%s› from current directory. Not downloading from ‹%s›.\n%b" "$fStatus" "$_filename" "$_url" "$fEnd" |
         tee -a "$logFilename"
       return 0
     else
@@ -259,10 +260,21 @@ if [ $installEuroScope == 1 ]; then
   winetricks --unattended wininet
 
   printf "%bDownloading EuroScope…\n%b" "$fStatus" "$fEnd"
-  esFilename="EuroScopeSetup32.msi"
-  # EuroScope is a 32-bit program, but can run in 64-bit Windows with WoW64
-  download https://www.euroscope.hu/install/EuroScopeSetup32.msi "$esFilename"
 
+
+  printf "%bFinding link \".msi\" on page https://www.euroscope.hu/wp/installation/…\n%b" "$fStatus" "$fEnd"
+  download https://www.euroscope.hu/wp/installation/ es-installation.html
+  _esUrl=$(grep -Eo 'href="[^"]+\.msi' es-installation.html | grep -Eo 'http.*\.msi' || true)
+
+  if [ -z "$_esUrl" ]; then
+    printf "%bERROR: Could not find installer on homepage.\n%b" "$fError" "$fEnd"
+    exit 2
+  fi
+
+  printf "%bDownloading EuroScope…\n%b" "$fStatus" "$fEnd"
+  esFilename="EuroScopeInstaller.msi"
+  download "$_esUrl" "$esFilename"
+   
   printf "%bInstalling EuroScope…\n%b" "$fSection" "$fEnd"
   wine msiexec /q /l "euroscope-afv-wine_msiexec-es.log" /i "$esFilename"
 
@@ -270,8 +282,14 @@ if [ $installEuroScope == 1 ]; then
     # find link "Download latest beta" on EuroScope homepage
     printf "%bFinding link \"latest beta\" on EuroScope homepage…\n%b" "$fStatus" "$fEnd"
     download https://www.euroscope.hu/wp/ es-index.html
-    _esBetaUrl=$(grep -Eo '<a.*>Download latest beta' es-index.html | grep -Eo 'http.*\.zip')
-    printf "%bFound link to latest beta on homepage. Downloading EuroScope beta…\n%b" "$fStatus" "$fEnd"
+    _esBetaUrl=$(grep -Eo '<a.*>Download latest beta' es-index.html | grep -Eo 'http.*\.zip' || true)
+
+    if [ -z "$_esBetaUrl" ]; then
+      printf "%bERROR: Could not find beta link on homepage. Will not apply beta patch. (You can ignore this by passing --no-euroscope-beta)\n%b" "$fError" "$fEnd"
+      exit 3
+    fi
+
+    printf "%bDownloading EuroScope beta…\n%b" "$fStatus" "$fEnd"
     esBetaFilename="EuroScope-Beta.zip"
     download "$_esBetaUrl" "$esBetaFilename"
 
