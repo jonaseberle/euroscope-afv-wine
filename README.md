@@ -74,7 +74,6 @@ mkdir -p wine && cd wine
 
 ## Known issues:
 
-* 2022-03: Arch/Manjaro's wine 7.3 is not able to start EuroScope. The problem is [this Arch/wine bug](https://bugs.winehq.org/show_bug.cgi?id=52614).
 * Audio for VATSIM sometimes starts fine, then on another day it might not start any more. It probably has something to
   do with its internal updater. Recommendation: Do not install AfV.
 * EuroScope hangs on quitting, after saving changed settings.
