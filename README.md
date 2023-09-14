@@ -23,7 +23,7 @@ This is in beta state but very usable. It needs people testing it. Please report
 ## Requirements:
 
 * `bash`, `unzip`, `grep`, `wget`
-* `wine` and `winetricks`. Suggested (unsure if needed): Packaged `wine-gecko` and `wine-mono`
+* `wine` and `winetricks`. Suggested (unsure if needed): Packaged `wine-gecko`
 
 You will see a warning if something is missing.
 
