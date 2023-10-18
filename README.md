@@ -68,12 +68,13 @@ mkdir -p wine && cd wine
 
 ## Tested with:
 
-* wine 6, 7.0-rc5, 7.5, 7.22, 8.0-rc1, 8.1
-* Manjaro, Ubuntu 20.4, openSUSE Tumbleweed
+* wine 6, 7.0-rc5, 7.5, 7.20, 7.22, 8.0-rc1, 8.1
+* Manjaro, Ubuntu 20.04, Ubuntu 23.04 openSUSE Tumbleweed
 * please report your successes/failures with other environments
 
 ## Known issues:
 
+* 2023-10: On Ubuntu 23.04, `winetricks` [would not run with `wine`](https://askubuntu.com/questions/1468904/winetricks-ubuntu-23-04-wont-launch) – use `wine-development` (`sudo apt install wine-development`)
 * Audio for VATSIM sometimes starts fine, then on another day it might not start any more. It probably has something to
   do with its internal updater. Recommendation: Do not install AfV.
 * EuroScope hangs on quitting, after saving changed settings.
