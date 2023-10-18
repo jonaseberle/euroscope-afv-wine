@@ -4,8 +4,7 @@ This is a script that's meant to facilitate installing an ATC-environment for Li
 
 If everything goes well, it does not require any additional interaction.
 
-As both the essential VATSIM ATC programs [EuroScope](https://www.euroscope.hu/) and
-[Audio for VATSIM](https://audio.vatsim.net/) are Windows-only (why?!), this uses `wine` as emulation layer.
+It uses *wine* for the Windows-only programs.
 
 ## Current recommendation
 
@@ -19,6 +18,7 @@ Use this script only to install EuroScope (see "Usage" below).
 For audio use the Mac/Linux AfV client project [pierr3/VectorAudio](https://github.com/pierr3/VectorAudio). You can find downloads under "[Releases](https://github.com/pierr3/VectorAudio/releases)".
 This is in beta state but very usable. It needs people testing it. Please report problems with it on [pierr3/VectorAudio issues](https://github.com/pierr3/VectorAudio/issues).
 
+2023-05 We now have an RDF plugin for VectorAudio, too! The well known RDFPlugin by @chembergj has been extended in a [fork by @KingfuChan](https://github.com/KingfuChan/RDF). You can find downloads under "[Releases](https://github.com/KingfuChan/RDF/releases)".
 
 ## Requirements:
 
@@ -102,5 +102,7 @@ Contributions of any form are very welcome. You can approach me via the "discuss
 
 This is built on top of the work of Samir Gebran https://forums.vatsim.net/topic/31019-euroscope-on-linux-howto/.
 
-Thank you to the creators of the EuroScope and Audio for VATSIM programs. 
+
+Thank you to the creators of the [EuroScope](https://www.euroscope.hu/) and 
+[Audio for VATSIM](https://audio.vatsim.net/) programs. 
 It is a pity that they are not available cross-platform natively.
