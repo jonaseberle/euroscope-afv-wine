@@ -22,10 +22,9 @@ This is in beta state but very usable. It needs people testing it. Please report
 
 ## Requirements:
 
+* On Mac, please install GNU `getopt`, for example via `brew install gnu-getopt`. Thanks to @daan33 for providing that solution.
 * `bash`, `unzip`, `grep`, `wget`
 * `wine` and `winetricks`. Suggested (unsure if needed): Packaged `wine-gecko` and `wine-mono`
-
-You will see a warning if something is missing.
 
 ## Usage:
 
