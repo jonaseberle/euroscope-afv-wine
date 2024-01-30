@@ -69,7 +69,7 @@ mkdir -p wine && cd wine
 ## Tested with:
 
 * wine 6, 7.0-rc5, 7.5, 7.20, 7.22, 8.0-rc1, 8.1
-* Manjaro, Ubuntu 20.04, Ubuntu 23.04 openSUSE Tumbleweed
+* Manjaro, Ubuntu 20.04, Ubuntu 23.04, Ubuntu 23.10, openSUSE Tumbleweed
 * please report your successes/failures with other environments
 
 ## Known issues:
