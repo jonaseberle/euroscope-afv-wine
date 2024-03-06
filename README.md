@@ -45,9 +45,8 @@ Usage: euroscope-afv-wine_install.sh [<options>]
 
 ```bash
 # create a new directory for your wine environment and change into it
-wineDir=$USER/VATSIM-ATC/wine
-mkdir -p "$wineDir"
-cd "$wineDir"
+wineDir=$USER/VATSIM-ATC/wine-install
+mkdir -p "$wineDir" && cd "$wineDir"
 
 # clone this repo
 git clone https://github.com/jonaseberle/euroscope-afv-wine.git && cd euroscope-afv-wine
@@ -57,6 +56,9 @@ chmod +x euroscope-afv-wine_install.sh
 
 # switch into a directory where the wine environment will be created
 mkdir -p wine && cd wine
+
+# You'll now have a $USER/VATSIM-ATC/wine-install/euroscope-afv-wine/wine directory
+# where we will setup the environment. This is called the "WINEPREFIX".
 
 # check the script options
 ../euroscope-afv-wine_install.sh --help
