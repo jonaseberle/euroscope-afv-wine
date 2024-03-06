@@ -93,6 +93,9 @@ Try updating `winetricks` if you experience problems with the "Installing libsâ€
 ```bash
 [sudo] winetricks --self-update
 ```
+Don't do this on Debian/Ubuntu/... though. The packaged `winetricks` i
+[contains a patch](https://github.com/Winetricks/winetricks/issues/2119#issuecomment-1793812033) 
+that is important in those environments for working with win64.
 
 ## Contact:
 
