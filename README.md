@@ -15,10 +15,9 @@ Recommendation:
 
 Use this script only to install EuroScope (see "Usage" below).
 
-For audio use the Mac/Linux AfV client project [pierr3/VectorAudio](https://github.com/pierr3/VectorAudio). You can find downloads under "[Releases](https://github.com/pierr3/VectorAudio/releases)".
-This is in beta state but very usable. It needs people testing it. Please report problems with it on [pierr3/VectorAudio issues](https://github.com/pierr3/VectorAudio/issues).
+For audio use the Mac/Linux AfV client project [pierr3/TrackAudio](https://github.com/pierr3/TrackAudio) (successor of [pierr3/VectorAudio](https://github.com/pierr3/VectorAudio)).
 
-2023-05 We now have an RDF plugin for VectorAudio, too! The well known RDFPlugin by @chembergj has been extended in a [fork by @KingfuChan](https://github.com/KingfuChan/RDF). You can find downloads under "[Releases](https://github.com/KingfuChan/RDF/releases)".
+2023-05 We now have an RDF plugin for TrackAudio, too! The well known RDFPlugin by @chembergj has been extended in a [fork by @KingfuChan](https://github.com/KingfuChan/RDF). You can find downloads under "[Releases](https://github.com/KingfuChan/RDF/releases)".
 
 ## Requirements:
 
