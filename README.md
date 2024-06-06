@@ -68,8 +68,8 @@ mkdir -p wine && cd wine
 
 ## Tested with:
 
-* wine 6, 7.0-rc5, 7.5, 7.20, 7.22, 8.0-rc1, 8.0.1, 8.1
-* Arch (Manjaro, EndeavourOS), Ubuntu (20.04, 23.04, 23.10), openSUSE Tumbleweed
+* wine 6, 7.0-rc5, 7.5, 7.20, 7.22, 8.0-rc1, 8.0.1, 8.1, 9.0
+* Arch (Manjaro, EndeavourOS), Ubuntu (20.04, 23.04, 23.10, 24.04), openSUSE Tumbleweed
 
 Please report your successes/failures with these or other environments.
 
