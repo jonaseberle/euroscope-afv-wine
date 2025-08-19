@@ -75,6 +75,7 @@ Please report your successes/failures with these or other environments.
 
 ## Known issues:
 
+* 2025-08: There are problems (crashes on startup) with later TopSky plugin versions with EuroScope under wine.
 * 2023-10: On Ubuntu 23.04, `winetricks` [would not run with `wine`](https://askubuntu.com/questions/1468904/winetricks-ubuntu-23-04-wont-launch) – use `wine-development` (`sudo apt install wine-development`)
 * Audio for VATSIM sometimes starts fine, then on another day it might not start any more. It probably has something to
   do with its internal updater. Recommendation: Do not install AfV.
