@@ -102,7 +102,7 @@ that is important in those environments for working with win64.
 ## Contact:
 
 Contributions of any form are very welcome. You can approach me via the "discussions" or "issues" functions here
-(prefered) or via my [VATSIM forums profile](https://forums.vatsim.net/profile/191848-jonas-eberle/).
+(prefered) or via my [VATSIM forums profile](https://forum.vatsim.net/u/1068951/activity).
 
 ## Thank you
 
